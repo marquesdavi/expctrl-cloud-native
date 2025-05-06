@@ -1,4 +1,4 @@
-package com.financial.feature.payee;
+package com.financial.feature.payee.entity;
 
 import com.financial.feature.transaction.entity.Transaction;
 import com.financial.feature.user.User;

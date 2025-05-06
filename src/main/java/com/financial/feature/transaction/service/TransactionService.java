@@ -3,8 +3,7 @@ package com.financial.feature.transaction.service;
 import com.financial.feature.account.service.contract.AccountServiceContract;
 import com.financial.feature.category.Category;
 import com.financial.feature.importbatch.ImportBatch;
-import com.financial.feature.payee.Payee;
-import com.financial.feature.tag.entity.Tag;
+import com.financial.feature.payee.entity.Payee;
 import com.financial.feature.tag.service.contract.TagServiceContract;
 import com.financial.feature.transaction.entity.Transaction;
 import com.financial.feature.transaction.dto.TransactionDTO;
@@ -13,6 +12,7 @@ import com.financial.feature.transaction.repository.TransactionRepository;
 import com.financial.feature.transaction.repository.TransactionTagRepository;
 import com.financial.feature.transaction.service.contract.TransactionServiceContract;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +42,7 @@ public class TransactionService implements TransactionServiceContract {
     }
 
     @Override
+    @Transactional
     public Response create(TransactionDTO dto) {
         Transaction instance = new Transaction();
         mapTransactionModification(dto, instance);
@@ -49,6 +50,17 @@ public class TransactionService implements TransactionServiceContract {
 
         handleTransactionTags(dto, instance);
         return Response.created(URI.create("/transactions/" + instance.id)).build();
+    }
+
+    @Override
+    @Transactional
+    public TransactionDTO update(Long id, TransactionDTO dto) {
+        Transaction instance = findByID(id);
+        mapTransactionModification(dto, instance);
+
+        TransactionTag.delete("transaction", instance);
+        handleTransactionTags(dto, instance);
+        return toDTO(instance);
     }
 
     private void mapTransactionModification(TransactionDTO dto, Transaction instance) {
@@ -65,16 +77,7 @@ public class TransactionService implements TransactionServiceContract {
         instance.importBatch = (ImportBatch) ImportBatch.findById(dto.importBatchId());
     }
 
-    @Override
-    public TransactionDTO update(Long id, TransactionDTO dto) {
-        Transaction instance = findByID(id);
-        mapTransactionModification(dto, instance);
-
-        TransactionTag.delete("transaction", instance);
-        handleTransactionTags(dto, instance);
-        return toDTO(instance);
-    }
-
+    @Transactional
     private void handleTransactionTags(TransactionDTO dto, Transaction instance) {
         if (dto.tagIds() != null) {
             List<TransactionTag> transactionTags = dto.tagIds().stream().map(tagId -> {
@@ -89,6 +92,7 @@ public class TransactionService implements TransactionServiceContract {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Transaction instance = findByID(id);
         transactionRepository.delete(instance);

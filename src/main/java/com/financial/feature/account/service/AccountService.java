@@ -7,6 +7,7 @@ import com.financial.feature.account.service.contract.AccountServiceContract;
 import com.financial.feature.bank.Bank;
 import com.financial.feature.user.User;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,7 @@ public class AccountService implements AccountServiceContract {
     }
 
     @Override
+    @Transactional
     public Response create(AccountDTO dto) {
         Account a = new Account();
         a.bank = (Bank) Bank.findById(dto.bankId());
@@ -61,6 +63,7 @@ public class AccountService implements AccountServiceContract {
     }
 
     @Override
+    @Transactional
     public AccountDTO update(Long id, AccountDTO dto) {
         var a = findById(id);
         a.bank          = (Bank) Bank.findById(dto.bankId());
@@ -79,6 +82,7 @@ public class AccountService implements AccountServiceContract {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         accountRepository.findByIdOptional(id)
                 .orElseThrow(NotFoundException::new)

@@ -1,4 +1,4 @@
-package com.financial.feature.payee;
+package com.financial.feature.payee.dto;
 
 public record PayeeDTO(Long id,
                        Long userId,
