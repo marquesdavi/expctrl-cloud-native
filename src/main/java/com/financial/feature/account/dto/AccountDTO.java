@@ -1,4 +1,4 @@
-package com.financial.dto;
+package com.financial.feature.account.dto;
 
 public record AccountDTO(Long id,
                         Long bankId,

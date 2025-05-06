@@ -1,5 +1,8 @@
-package com.financial.entity;
+package com.financial.feature.account.entity;
 
+import com.financial.feature.bank.Bank;
+import com.financial.feature.transaction.entity.Transaction;
+import com.financial.feature.user.User;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import lombok.Data;
