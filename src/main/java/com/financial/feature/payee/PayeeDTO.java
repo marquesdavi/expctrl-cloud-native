@@ -1,0 +1,8 @@
+package com.financial.feature.payee;
+
+public record PayeeDTO(Long id,
+                       Long userId,
+                       String name,
+                       String details) {
+
+}
