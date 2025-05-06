@@ -1,11 +1,11 @@
 package com.financial.feature.transaction.service;
 
-import com.financial.feature.account.entity.Account;
 import com.financial.feature.account.service.contract.AccountServiceContract;
 import com.financial.feature.category.Category;
 import com.financial.feature.importbatch.ImportBatch;
 import com.financial.feature.payee.Payee;
-import com.financial.feature.tag.Tag;
+import com.financial.feature.tag.entity.Tag;
+import com.financial.feature.tag.service.contract.TagServiceContract;
 import com.financial.feature.transaction.entity.Transaction;
 import com.financial.feature.transaction.dto.TransactionDTO;
 import com.financial.feature.transaction.entity.TransactionTag;
@@ -18,7 +18,6 @@ import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,6 +27,7 @@ public class TransactionService implements TransactionServiceContract {
     private final TransactionRepository transactionRepository;
     private final TransactionTagRepository transactionTagRepository;
     private final AccountServiceContract accountService;
+    private final TagServiceContract tagService;
 
     @Override
     public List<TransactionDTO> list() {
@@ -78,10 +78,10 @@ public class TransactionService implements TransactionServiceContract {
     private void handleTransactionTags(TransactionDTO dto, Transaction instance) {
         if (dto.tagIds() != null) {
             List<TransactionTag> transactionTags = dto.tagIds().stream().map(tagId -> {
-                var tt = new TransactionTag();
-                tt.transaction = instance;
-                tt.tag = (Tag) Tag.findById(tagId);
-                return tt;
+                var transactionTag = new TransactionTag();
+                transactionTag.transaction = instance;
+                transactionTag.tag = tagService.findByID(tagId);
+                return transactionTag;
             }).toList();
 
             transactionTagRepository.persistAll(transactionTags);

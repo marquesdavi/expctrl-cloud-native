@@ -1,6 +1,6 @@
 package com.financial.feature.transaction.entity;
 
-import com.financial.feature.tag.Tag;
+import com.financial.feature.tag.entity.Tag;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import lombok.Data;

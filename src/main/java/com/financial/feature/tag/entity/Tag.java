@@ -1,4 +1,4 @@
-package com.financial.feature.tag;
+package com.financial.feature.tag.entity;
 
 import com.financial.feature.user.User;
 import com.financial.feature.transaction.entity.TransactionTag;
