@@ -2,32 +2,29 @@ package com.financial.feature.user.resource;
 
 
 import com.financial.feature.user.dto.UserDTO;
-import com.financial.feature.user.entity.User;
+import com.financial.feature.user.service.contract.UserServiceContract;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import lombok.RequiredArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import java.net.URI;
-import java.time.Instant;
+
 import java.util.List;
 
 @Path("/users")
+@RequiredArgsConstructor
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {
+    private final UserServiceContract userService;
 
     @GET
     @Operation(summary = "List all users")
     @APIResponse(responseCode = "200", description = "Users retrieved")
     public List<UserDTO> list() {
-        return User.listAll().stream()
-                .map(peb -> {
-                    var u = (User) peb;
-                    return new UserDTO(u.id, u.name, u.email, u.createdAt);
-                })
-                .toList();
+        return userService.list();
     }
 
     @GET
@@ -36,9 +33,7 @@ public class UserResource {
     @APIResponse(responseCode = "200", description = "User found")
     @APIResponse(responseCode = "404", description = "User not found")
     public UserDTO get(@PathParam("id") Long id) {
-        var peb = User.findByIdOptional(id).orElseThrow(NotFoundException::new);
-        var u = (User) peb;
-        return new UserDTO(u.id, u.name, u.email, u.createdAt);
+        return userService.get(id);
     }
 
     @POST
@@ -46,12 +41,7 @@ public class UserResource {
     @Operation(summary = "Create a new user")
     @APIResponse(responseCode = "201", description = "User created")
     public Response create(UserDTO dto) {
-        var u = new User();
-        u.name = dto.name();
-        u.email = dto.email();
-        u.createdAt = Instant.now();
-        u.persist();
-        return Response.created(URI.create("/users/" + u.id)).build();
+        return userService.create(dto);
     }
 
     @PUT
@@ -60,11 +50,7 @@ public class UserResource {
     @Operation(summary = "Update an existing user")
     @APIResponse(responseCode = "200", description = "User updated")
     public UserDTO update(@PathParam("id") Long id, UserDTO dto) {
-        var peb = User.findByIdOptional(id).orElseThrow(NotFoundException::new);
-        var u = (User) peb;
-        u.name = dto.name();
-        u.email = dto.email();
-        return new UserDTO(u.id, u.name, u.email, u.createdAt);
+        return userService.update(id, dto);
     }
 
     @DELETE
@@ -73,6 +59,6 @@ public class UserResource {
     @Operation(summary = "Delete a user")
     @APIResponse(responseCode = "204", description = "User deleted")
     public void delete(@PathParam("id") Long id) {
-        User.findByIdOptional(id).orElseThrow(NotFoundException::new).delete();
+        userService.delete(id);
     }
 }
