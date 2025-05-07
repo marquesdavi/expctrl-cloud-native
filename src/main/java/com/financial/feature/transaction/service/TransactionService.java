@@ -1,8 +1,8 @@
 package com.financial.feature.transaction.service;
 
 import com.financial.feature.account.service.contract.AccountServiceContract;
-import com.financial.feature.category.Category;
-import com.financial.feature.importbatch.ImportBatch;
+import com.financial.feature.category.entity.Category;
+import com.financial.feature.importbatch.entity.ImportBatch;
 import com.financial.feature.payee.entity.Payee;
 import com.financial.feature.tag.service.contract.TagServiceContract;
 import com.financial.feature.transaction.entity.Transaction;

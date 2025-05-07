@@ -1,4 +1,4 @@
-package com.financial.feature.category;
+package com.financial.feature.category.dto;
 
 public record CategoryDTO(Long id,
                           Long userId,

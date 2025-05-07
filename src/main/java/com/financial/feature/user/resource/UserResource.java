@@ -1,6 +1,8 @@
-package com.financial.feature.user;
+package com.financial.feature.user.resource;
 
 
+import com.financial.feature.user.dto.UserDTO;
+import com.financial.feature.user.entity.User;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

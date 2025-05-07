@@ -6,7 +6,7 @@ import com.financial.feature.tag.entity.Tag;
 import com.financial.feature.tag.repository.TagRepository;
 import com.financial.feature.tag.service.contract.TagServiceContract;
 import com.financial.feature.transaction.repository.TransactionTagRepository;
-import com.financial.feature.user.User;
+import com.financial.feature.user.entity.User;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;

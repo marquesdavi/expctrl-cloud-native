@@ -36,7 +36,6 @@ public class TagResource {
     }
 
     @POST
-    @Transactional
     @Operation(summary = "Create a new tag")
     @APIResponse(responseCode = "201", description = "Tag created")
     public Response create(TagDTO dto) {
@@ -45,7 +44,6 @@ public class TagResource {
 
     @PUT
     @Path("/{id}")
-    @Transactional
     @Operation(summary = "Update an existing tag")
     @APIResponse(responseCode = "200", description = "Tag updated")
     public TagDTO update(@PathParam("id") Long id, TagDTO dto) {
@@ -54,7 +52,6 @@ public class TagResource {
 
     @DELETE
     @Path("/{id}")
-    @Transactional
     @Operation(summary = "Delete a tag")
     @APIResponse(responseCode = "204", description = "Tag deleted")
     public void delete(@PathParam("id") Long id) {

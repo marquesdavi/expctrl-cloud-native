@@ -35,7 +35,6 @@ public class AccountResource {
     }
 
     @POST
-    @Transactional
     @Operation(summary = "Create a new account")
     @APIResponse(responseCode = "201", description = "Account created")
     public Response create(AccountDTO dto) {
@@ -44,7 +43,6 @@ public class AccountResource {
 
     @PUT
     @Path("/{id}")
-    @Transactional
     @Operation(summary = "Update an existing account")
     @APIResponse(responseCode = "200", description = "Account updated")
     public AccountDTO update(@PathParam("id") Long id, AccountDTO dto) {
@@ -53,7 +51,6 @@ public class AccountResource {
 
     @DELETE
     @Path("/{id}")
-    @Transactional
     @Operation(summary = "Delete an account")
     @APIResponse(responseCode = "204", description = "Account deleted")
     public void delete(@PathParam("id") Long id) {

@@ -1,4 +1,4 @@
-package com.financial.feature.budget;
+package com.financial.feature.budget.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package com.financial.feature.importbatch;
+package com.financial.feature.importbatch.dto;
 
 import java.time.Instant;
 

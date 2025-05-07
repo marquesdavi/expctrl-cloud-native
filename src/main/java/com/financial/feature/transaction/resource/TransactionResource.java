@@ -37,7 +37,6 @@ public class TransactionResource {
     }
 
     @POST
-    @Transactional
     @Operation(summary = "Create a new transaction")
     @APIResponse(responseCode = "201", description = "Transaction created")
     public Response create(TransactionDTO dto) {
@@ -54,7 +53,6 @@ public class TransactionResource {
 
     @DELETE
     @Path("/{id}")
-    @Transactional
     @Operation(summary = "Delete a transaction")
     @APIResponse(responseCode = "204", description = "Transaction deleted")
     public void delete(@PathParam("id") Long id) {

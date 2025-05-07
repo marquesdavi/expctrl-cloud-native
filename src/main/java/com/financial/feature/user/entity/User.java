@@ -1,4 +1,4 @@
-package com.financial.feature.user;
+package com.financial.feature.user.entity;
 
 import com.financial.feature.account.entity.Account;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;

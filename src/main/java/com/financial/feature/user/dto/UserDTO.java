@@ -1,4 +1,4 @@
-package com.financial.feature.user;
+package com.financial.feature.user.dto;
 
 import java.time.Instant;
 
