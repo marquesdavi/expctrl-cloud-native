@@ -1,9 +1,11 @@
 package com.financial.feature.user.service;
 
 import com.financial.feature.user.dto.UserDTO;
+import com.financial.feature.user.dto.UserRequest;
 import com.financial.feature.user.entity.User;
 import com.financial.feature.user.repository.UserRepository;
 import com.financial.feature.user.service.contract.UserServiceContract;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
@@ -35,12 +37,13 @@ public class UserService implements UserServiceContract {
 
     @Override
     @Transactional
-    public Response create(UserDTO dto) {
+    public Response create(UserRequest dto) {
         User u = new User();
         u.name = dto.name();
         u.email = dto.email();
+        u.passwordHash = BcryptUtil.bcryptHash(dto.passwordHash());
         u.createdAt = Instant.now();
-        u.persist();
+        userRepository.persist(u);
         return Response.created(URI.create("/users/" + u.id)).build();
     }
 
@@ -50,6 +53,7 @@ public class UserService implements UserServiceContract {
         var u = findByID(id);
         u.name = dto.name();
         u.email = dto.email();
+        userRepository.persist(u);
         return new UserDTO(u.id, u.name, u.email, u.createdAt);
     }
 

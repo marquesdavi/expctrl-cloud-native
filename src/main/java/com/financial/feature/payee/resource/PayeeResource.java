@@ -2,7 +2,7 @@ package com.financial.feature.payee.resource;
 
 import com.financial.feature.payee.dto.PayeeDTO;
 import com.financial.feature.payee.service.contract.PayeeServiceContract;
-import jakarta.transaction.Transactional;
+import io.quarkus.security.Authenticated;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -12,6 +12,8 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 import java.util.List;
 
+
+@Authenticated
 @Path("/payees")
 @RequiredArgsConstructor
 @Produces(MediaType.APPLICATION_JSON)

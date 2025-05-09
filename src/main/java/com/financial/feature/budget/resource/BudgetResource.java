@@ -2,7 +2,7 @@ package com.financial.feature.budget.resource;
 
 import com.financial.feature.budget.dto.BudgetDTO;
 import com.financial.feature.budget.service.contract.BudgetServiceContract;
-import jakarta.transaction.Transactional;
+import io.quarkus.security.Authenticated;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -13,6 +13,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import java.util.List;
 
 
+@Authenticated
 @Path("/budgets")
 @RequiredArgsConstructor
 @Produces(MediaType.APPLICATION_JSON)

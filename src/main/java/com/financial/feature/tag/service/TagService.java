@@ -1,12 +1,10 @@
 package com.financial.feature.tag.service;
 
-import com.financial.feature.account.service.contract.AccountServiceContract;
 import com.financial.feature.tag.dto.TagDTO;
 import com.financial.feature.tag.entity.Tag;
 import com.financial.feature.tag.repository.TagRepository;
 import com.financial.feature.tag.service.contract.TagServiceContract;
-import com.financial.feature.transaction.repository.TransactionTagRepository;
-import com.financial.feature.user.entity.User;
+import com.financial.feature.user.service.contract.UserServiceContract;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
@@ -21,8 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TagService implements TagServiceContract {
     private final TagRepository tagRepository;
-    private final TransactionTagRepository transactionTagRepository;
-    private final AccountServiceContract accountService;
+    private final UserServiceContract userService;
 
     @Override
     public List<TagDTO> list() {
@@ -41,7 +38,7 @@ public class TagService implements TagServiceContract {
     @Transactional
     public Response create(TagDTO dto) {
         Tag instance = new Tag();
-        instance.user = (User) User.findById(dto.userId());
+        instance.user = userService.findByID(dto.userId());
         instance.name = dto.name();
         tagRepository.persist(instance);
         return Response.created(URI.create("/tags/" + instance.id)).build();
@@ -51,7 +48,7 @@ public class TagService implements TagServiceContract {
     @Transactional
     public TagDTO update(Long id, TagDTO dto) {
         Tag t = findByID(id);
-        t.user = (User) User.findById(dto.userId());
+        t.user = userService.findByID(dto.userId());
         t.name = dto.name();
         return new TagDTO(t.id, t.user.id, t.name);
     }

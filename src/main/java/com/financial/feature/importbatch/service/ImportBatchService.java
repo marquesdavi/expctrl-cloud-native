@@ -4,7 +4,7 @@ import com.financial.feature.importbatch.dto.ImportBatchDTO;
 import com.financial.feature.importbatch.entity.ImportBatch;
 import com.financial.feature.importbatch.repository.ImportBatchRepository;
 import com.financial.feature.importbatch.service.contract.ImportBatchServiceContract;
-import com.financial.feature.user.entity.User;
+import com.financial.feature.user.service.contract.UserServiceContract;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ImportBatchService implements ImportBatchServiceContract {
     private final ImportBatchRepository importBatchRepository;
+    private final UserServiceContract userService;
 
     @Override
     public List<ImportBatchDTO> list() {
@@ -41,7 +42,7 @@ public class ImportBatchService implements ImportBatchServiceContract {
     @Transactional
     public Response create(ImportBatchDTO dto) {
         ImportBatch b = new ImportBatch();
-        b.user       = (User) User.findById(dto.userId());
+        b.user       = userService.findByID(dto.userId());
         b.source     = dto.source();
         b.fileName   = dto.fileName();
         b.importedAt = dto.importedAt() != null ? dto.importedAt() : Instant.now();

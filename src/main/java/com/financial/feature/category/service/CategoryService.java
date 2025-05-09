@@ -4,7 +4,7 @@ import com.financial.feature.category.dto.CategoryDTO;
 import com.financial.feature.category.entity.Category;
 import com.financial.feature.category.repository.CategoryRepository;
 import com.financial.feature.category.service.contract.CategoryServiceContract;
-import com.financial.feature.user.entity.User;
+import com.financial.feature.user.service.contract.UserServiceContract;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryService implements CategoryServiceContract {
     private final CategoryRepository categoryRepository;
+    private final UserServiceContract userService;
 
     @Override
     public List<CategoryDTO> list() {
@@ -48,7 +49,7 @@ public class CategoryService implements CategoryServiceContract {
     @Transactional
     public Response create(CategoryDTO dto) {
         Category c = new Category();
-        c.user = (User) User.findById(dto.userId());
+        c.user = userService.findByID(dto.userId());
         c.name = dto.name();
         c.type = dto.type();
         c.parentCategory = dto.parentCategoryId() != null
@@ -62,7 +63,7 @@ public class CategoryService implements CategoryServiceContract {
     @Transactional
     public CategoryDTO update(Long id, CategoryDTO dto) {
         Category c = findById(id);
-        c.user = (User) User.findById(dto.userId());
+        c.user = userService.findByID(dto.userId());
         c.name = dto.name();
         c.type = dto.type();
         c.parentCategory = dto.parentCategoryId() != null

@@ -2,7 +2,7 @@ package com.financial.feature.transaction.resource;
 
 import com.financial.feature.transaction.dto.TransactionDTO;
 import com.financial.feature.transaction.service.contract.TransactionServiceContract;
-import jakarta.transaction.Transactional;
+import io.quarkus.security.Authenticated;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -12,7 +12,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 import java.util.List;
 
-
+@Authenticated
 @Path("/transactions")
 @RequiredArgsConstructor
 @Produces(MediaType.APPLICATION_JSON)

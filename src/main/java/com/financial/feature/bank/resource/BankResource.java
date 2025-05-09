@@ -2,15 +2,18 @@ package com.financial.feature.bank.resource;
 
 import com.financial.feature.bank.dto.BankDTO;
 import com.financial.feature.bank.service.contract.BankServiceContract;
-import jakarta.transaction.Transactional;
+import io.quarkus.security.Authenticated;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+
 import java.util.List;
 
+
+@Authenticated
 @Path("/banks")
 @RequiredArgsConstructor
 @Produces(MediaType.APPLICATION_JSON)

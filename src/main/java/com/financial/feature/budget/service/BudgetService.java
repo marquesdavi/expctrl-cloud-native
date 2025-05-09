@@ -5,7 +5,7 @@ import com.financial.feature.budget.entity.Budget;
 import com.financial.feature.budget.repository.BudgetRepository;
 import com.financial.feature.budget.service.contract.BudgetServiceContract;
 import com.financial.feature.category.entity.Category;
-import com.financial.feature.user.entity.User;
+import com.financial.feature.user.service.contract.UserServiceContract;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BudgetService implements BudgetServiceContract {
     private final BudgetRepository budgetRepository;
+    private final UserServiceContract userService;
 
     @Override
     public List<BudgetDTO> list() {
@@ -51,7 +52,7 @@ public class BudgetService implements BudgetServiceContract {
     @Transactional
     public Response create(BudgetDTO dto) {
         var b = new Budget();
-        b.user        = (User) User.findById(dto.userId());
+        b.user        = userService.findByID(dto.userId());
         b.category    = (Category) Category.findById(dto.categoryId());
         b.periodStart = dto.periodStart();
         b.periodEnd   = dto.periodEnd();
@@ -64,7 +65,7 @@ public class BudgetService implements BudgetServiceContract {
     @Transactional
     public BudgetDTO update(Long id, BudgetDTO dto) {
         Budget b = findById(id);
-        b.user        = (User) User.findById(dto.userId());
+        b.user        = userService.findByID(dto.userId());
         b.category    = (Category) Category.findById(dto.categoryId());
         b.periodStart = dto.periodStart();
         b.periodEnd   = dto.periodEnd();

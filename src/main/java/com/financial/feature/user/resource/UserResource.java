@@ -2,6 +2,7 @@ package com.financial.feature.user.resource;
 
 
 import com.financial.feature.user.dto.UserDTO;
+import com.financial.feature.user.dto.UserRequest;
 import com.financial.feature.user.service.contract.UserServiceContract;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -40,7 +41,7 @@ public class UserResource {
     @Transactional
     @Operation(summary = "Create a new user")
     @APIResponse(responseCode = "201", description = "User created")
-    public Response create(UserDTO dto) {
+    public Response create(UserRequest dto) {
         return userService.create(dto);
     }
 

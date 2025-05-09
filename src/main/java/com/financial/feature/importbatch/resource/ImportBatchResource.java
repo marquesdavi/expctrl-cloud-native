@@ -2,6 +2,7 @@ package com.financial.feature.importbatch.resource;
 
 import com.financial.feature.importbatch.dto.ImportBatchDTO;
 import com.financial.feature.importbatch.service.contract.ImportBatchServiceContract;
+import io.quarkus.security.Authenticated;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -13,6 +14,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import java.util.List;
 
 
+@Authenticated
 @Path("/import-batches")
 @RequiredArgsConstructor
 @Produces(MediaType.APPLICATION_JSON)

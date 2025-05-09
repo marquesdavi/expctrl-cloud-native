@@ -78,7 +78,7 @@ public class TransactionService implements TransactionServiceContract {
     }
 
     @Transactional
-    private void handleTransactionTags(TransactionDTO dto, Transaction instance) {
+    void handleTransactionTags(TransactionDTO dto, Transaction instance) {
         if (dto.tagIds() != null) {
             List<TransactionTag> transactionTags = dto.tagIds().stream().map(tagId -> {
                 var transactionTag = new TransactionTag();

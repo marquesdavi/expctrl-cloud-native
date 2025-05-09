@@ -1,12 +1,10 @@
 package com.financial.feature.payee.service;
 
-import com.financial.feature.account.service.contract.AccountServiceContract;
 import com.financial.feature.payee.dto.PayeeDTO;
 import com.financial.feature.payee.entity.Payee;
 import com.financial.feature.payee.repository.PayeeRepository;
 import com.financial.feature.payee.service.contract.PayeeServiceContract;
-import com.financial.feature.transaction.repository.TransactionTagRepository;
-import com.financial.feature.user.entity.User;
+import com.financial.feature.user.service.contract.UserServiceContract;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
@@ -21,8 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PayeeService implements PayeeServiceContract {
     private final PayeeRepository payeeRepository;
-    private final TransactionTagRepository transactionTagRepository;
-    private final AccountServiceContract accountService;
+    private final UserServiceContract userService;
 
     @Override
     public List<PayeeDTO> list() {
@@ -44,7 +41,7 @@ public class PayeeService implements PayeeServiceContract {
     @Transactional
     public Response create(PayeeDTO dto) {
         Payee p = new Payee();
-        p.user    = (User) User.findById(dto.userId());
+        p.user    = userService.findByID(dto.userId());
         p.name    = dto.name();
         p.details = dto.details();
         payeeRepository.persist(p);
@@ -55,7 +52,7 @@ public class PayeeService implements PayeeServiceContract {
     @Transactional
     public PayeeDTO update(Long id, PayeeDTO dto) {
         Payee p = findByID(id);
-        p.user    = (User) User.findById(dto.userId());
+        p.user    = userService.findByID(dto.userId());
         p.name    = dto.name();
         p.details = dto.details();
         payeeRepository.persist(p);
