@@ -2,21 +2,21 @@ package com.financial.feature.budget.entity;
 
 import com.financial.feature.category.entity.Category;
 import com.financial.feature.user.entity.User;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "budget")
-@Access(AccessType.FIELD)
-@AttributeOverride(name = "id", column = @Column(name = "budget_id"))
-public class Budget extends PanacheEntity {
+public class Budget {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    public Long id;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     public User user;

@@ -2,20 +2,20 @@ package com.financial.feature.category.entity;
 
 import com.financial.feature.transaction.entity.Transaction;
 import com.financial.feature.user.entity.User;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "category")
-@Access(AccessType.FIELD)
-@AttributeOverride(name = "id", column = @Column(name = "category_id"))
-public class Category extends PanacheEntity {
+public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    public Long id;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     public User user;

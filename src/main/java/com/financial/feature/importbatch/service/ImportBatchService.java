@@ -46,7 +46,7 @@ public class ImportBatchService implements ImportBatchServiceContract {
         b.source     = dto.source();
         b.fileName   = dto.fileName();
         b.importedAt = dto.importedAt() != null ? dto.importedAt() : Instant.now();
-        b.persist();
+        importBatchRepository.persist(b);
         return Response.created(URI.create("/import-batches/" + b.id)).build();
     }
 

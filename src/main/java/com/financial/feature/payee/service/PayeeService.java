@@ -24,10 +24,7 @@ public class PayeeService implements PayeeServiceContract {
     @Override
     public List<PayeeDTO> list() {
         return payeeRepository.listAll().stream()
-                .map(peb -> {
-                    var p = (Payee) peb;
-                    return new PayeeDTO(p.id, p.user.id, p.name, p.details);
-                })
+                .map(p -> new PayeeDTO(p.id, p.user.id, p.name, p.details))
                 .toList();
     }
 

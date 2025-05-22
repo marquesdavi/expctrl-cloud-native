@@ -2,21 +2,21 @@ package com.financial.feature.importbatch.entity;
 
 import com.financial.feature.transaction.entity.Transaction;
 import com.financial.feature.user.entity.User;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.time.Instant;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "import_batch")
-@Access(AccessType.FIELD)
-@AttributeOverride(name = "id", column = @Column(name = "import_batch_id"))
-public class ImportBatch extends PanacheEntity {
+public class ImportBatch {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    public Long id;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     public User user;

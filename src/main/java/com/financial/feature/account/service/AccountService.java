@@ -4,7 +4,7 @@ import com.financial.feature.account.dto.AccountDTO;
 import com.financial.feature.account.entity.Account;
 import com.financial.feature.account.repository.AccountRepository;
 import com.financial.feature.account.service.contract.AccountServiceContract;
-import com.financial.feature.bank.entity.Bank;
+import com.financial.feature.bank.service.contract.BankServiceContract;
 import com.financial.feature.user.service.contract.UserServiceContract;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.transaction.Transactional;
@@ -20,6 +20,7 @@ import java.util.List;
 public class AccountService implements AccountServiceContract {
     private final AccountRepository accountRepository;
     private final UserServiceContract userService;
+    private final BankServiceContract bankService;
 
 
     @Override
@@ -53,41 +54,43 @@ public class AccountService implements AccountServiceContract {
     @Override
     @Transactional
     public Response create(AccountDTO dto) {
-        Account a = new Account();
-        a.bank = (Bank) Bank.findById(dto.bankId());
-        a.user = userService.findByID(dto.userId());
-        a.accountNumber = dto.accountNumber();
-        a.branch        = dto.branch();
-        a.currency      = dto.currency();
-        accountRepository.persist(a);
-        return Response.created(URI.create("/accounts/" + a.id)).build();
+        Account account = new Account();
+        buildAccount(dto, account);
+        accountRepository.persist(account);
+        return Response.created(URI.create("/accounts/" + account.id)).build();
+    }
+
+    private void buildAccount(AccountDTO dto, Account account) {
+        account.bank = bankService.findById(dto.bankId());
+        account.user = userService.findByID(dto.userId());
+        account.accountNumber = dto.accountNumber();
+        account.branch        = dto.branch();
+        account.currency      = dto.currency();
     }
 
     @Override
     @Transactional
     public AccountDTO update(Long id, AccountDTO dto) {
-        var a = findById(id);
-        a.bank          = (Bank) Bank.findById(dto.bankId());
-        a.user          = userService.findByID(dto.userId());
-        a.accountNumber = dto.accountNumber();
-        a.branch        = dto.branch();
-        a.currency      = dto.currency();
+        Account account = findById(id);
+        buildAccount(dto, account);
+        accountRepository.persist(account);
         return new AccountDTO(
-                a.id,
-                a.bank.id,
-                a.user.id,
-                a.accountNumber,
-                a.branch,
-                a.currency
+                account.id,
+                account.bank.id,
+                account.user.id,
+                account.accountNumber,
+                account.branch,
+                account.currency
         );
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        accountRepository.findByIdOptional(id)
-                .orElseThrow(NotFoundException::new)
-                .delete();
+        Account account = accountRepository.findByIdOptional(id)
+                .orElseThrow(NotFoundException::new);
+
+        accountRepository.delete(account);
     }
 
     @Override

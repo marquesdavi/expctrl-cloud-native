@@ -1,21 +1,21 @@
 package com.financial.feature.tag.entity;
 
-import com.financial.feature.user.entity.User;
 import com.financial.feature.transaction.entity.TransactionTag;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import com.financial.feature.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tag")
-@Access(AccessType.FIELD)
-@AttributeOverride(name = "id", column = @Column(name = "tag_id"))
-public class Tag extends PanacheEntity {
+public class Tag {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    public Long id;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     public User user;

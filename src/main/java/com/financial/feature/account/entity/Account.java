@@ -3,20 +3,20 @@ package com.financial.feature.account.entity;
 import com.financial.feature.bank.entity.Bank;
 import com.financial.feature.transaction.entity.Transaction;
 import com.financial.feature.user.entity.User;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "account")
-@Access(AccessType.FIELD)
-@AttributeOverride(name = "id", column = @Column(name = "account_id"))
-public class Account extends PanacheEntity {
+public class Account {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    public Long id;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "bank_id")
     public Bank bank;

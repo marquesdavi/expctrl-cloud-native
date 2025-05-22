@@ -4,22 +4,22 @@ import com.financial.feature.account.entity.Account;
 import com.financial.feature.category.entity.Category;
 import com.financial.feature.importbatch.entity.ImportBatch;
 import com.financial.feature.payee.entity.Payee;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "transaction")
-@Access(AccessType.FIELD)
-@AttributeOverride(name = "id", column = @Column(name = "transaction_id"))
-public class Transaction extends PanacheEntity {
+public class Transaction {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    public Long id;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "account_id")
     public Account account;

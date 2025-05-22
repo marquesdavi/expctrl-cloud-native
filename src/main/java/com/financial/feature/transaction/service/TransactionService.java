@@ -1,12 +1,12 @@
 package com.financial.feature.transaction.service;
 
 import com.financial.feature.account.service.contract.AccountServiceContract;
-import com.financial.feature.category.entity.Category;
-import com.financial.feature.importbatch.entity.ImportBatch;
-import com.financial.feature.payee.entity.Payee;
+import com.financial.feature.category.service.contract.CategoryServiceContract;
+import com.financial.feature.importbatch.service.contract.ImportBatchServiceContract;
+import com.financial.feature.payee.service.contract.PayeeServiceContract;
 import com.financial.feature.tag.service.contract.TagServiceContract;
-import com.financial.feature.transaction.entity.Transaction;
 import com.financial.feature.transaction.dto.TransactionDTO;
+import com.financial.feature.transaction.entity.Transaction;
 import com.financial.feature.transaction.entity.TransactionTag;
 import com.financial.feature.transaction.repository.TransactionRepository;
 import com.financial.feature.transaction.repository.TransactionTagRepository;
@@ -28,6 +28,10 @@ public class TransactionService implements TransactionServiceContract {
     private final TransactionTagRepository transactionTagRepository;
     private final AccountServiceContract accountService;
     private final TagServiceContract tagService;
+    private final CategoryServiceContract categoryService;
+    private final PayeeServiceContract payeeService;
+    private final ImportBatchServiceContract importBatchService;
+
 
     @Override
     public List<TransactionDTO> list() {
@@ -58,7 +62,7 @@ public class TransactionService implements TransactionServiceContract {
         Transaction instance = findByID(id);
         mapTransactionModification(dto, instance);
 
-        TransactionTag.delete("transaction", instance);
+        transactionTagRepository.delete("transaction", instance);
         handleTransactionTags(dto, instance);
         return toDTO(instance);
     }
@@ -72,9 +76,9 @@ public class TransactionService implements TransactionServiceContract {
         instance.details = dto.details();
         instance.documentNumber = dto.documentNumber();
         instance.runningBalance = dto.runningBalance();
-        instance.category = (Category) Category.findById(dto.categoryId());
-        instance.payee = (Payee) Payee.findById(dto.payeeId());
-        instance.importBatch = (ImportBatch) ImportBatch.findById(dto.importBatchId());
+        instance.category = categoryService.findById(dto.categoryId());
+        instance.payee = payeeService.findByID(dto.payeeId());
+        instance.importBatch = importBatchService.findById(dto.importBatchId());
     }
 
     @Transactional

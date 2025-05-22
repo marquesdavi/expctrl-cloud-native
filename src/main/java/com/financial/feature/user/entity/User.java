@@ -11,11 +11,10 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "app_user")
-@Access(AccessType.FIELD)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "id")
     public Long id;
 
     @Column(name = "name",  nullable = false)
